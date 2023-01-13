@@ -56,7 +56,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(bodyParser.json());
 
-app.get("/", auth, (req, res, next) => {
+app.get("/", (req, res, next) => {
   res.json({ message: "Server Started Successfully..." });
 });
 
