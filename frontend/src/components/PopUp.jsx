@@ -42,8 +42,8 @@ const PopUp = ({ setPopup }) => {
   //     dispatch(createPopupMessage())
   // };
   return (
-    <div className="fixed top-12 lg:translate-x-[25%] md:translate-x-[20%]   z-50  w-full">
-      <div>
+    <div className="bg-[#000000b3] fixed top-0 bottom-0 left-0 right-0 z-[1000] h-scrren">
+      <div className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] p-[50px] z-[1000]">
         <form
           // ref={form}
 

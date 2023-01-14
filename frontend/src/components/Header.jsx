@@ -127,7 +127,7 @@ const Header = ({ isTopOfPage, selectedPage, setSelectedPage }) => {
                       </p>
                     </Link>
                   )}
-                  <p className="hover:text-yellow transition duration-500 cursor-pointer">
+                  <p onClick={logourUser} className="hover:text-yellow transition cursor-pointer duration-500">
                     Logout
                   </p>
                 </div>
