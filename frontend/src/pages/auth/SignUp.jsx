@@ -32,12 +32,18 @@ const SignUp = () => {
     (state) => state.users
   );
   const handleOnSubmit = (data) => {
-    const action = register(data)
+    const action = register(data);
     dispatch(action);
     toast.success("Successfully regstered.");
-    navigate("/")
+    if (success) {
+      navigate("/");
+    }else {
+      toast.error("Please true again!");
+    }
   };
+
  
+
   return (
     <div className="flex items-center justify-center w-full h-screen">
       <Formik

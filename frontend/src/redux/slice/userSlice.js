@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import axiosClient from "../../utils/axiosClient";
 import authHeader from "../../utils/dataService";
-const backendURL = "http://localhost:5000";
+const backendURL = "https://argumentik-abckend-nodejs.onrender.com";
+const user = JSON.parse(localStorage.getItem("user"));
 
 export const register = createAsyncThunk(
   "auth/register",
@@ -24,8 +24,11 @@ export const register = createAsyncThunk(
       );
       const data = await res.data;
       if (data.token) {
+        localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("token", JSON.stringify(data?.token));
       }
+
+
 
       return data;
     } catch (error) {
@@ -61,9 +64,13 @@ export const signIn = createAsyncThunk(
       );
 
       // store user's token in local storage
-      localStorage.setItem("user", JSON.stringify(data));
+      if (data) {
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("token", JSON.stringify(data.token));
+      }
 
-      return data.data;
+      console.log(data);
+      return data;
     } catch (error) {
       console.log(error);
       // return custom error message from API if any
@@ -108,7 +115,7 @@ export const updateUserRole = createAsyncThunk(
 
 export const updateSocialLinks = createAsyncThunk(
   "auth/updateSocialLink",
-  async ({ id, jsonData, toast }, { rejectWithValue }) => {
+  async (jsonData, { rejectWithValue }) => {
     try {
       // configure header's Content-Type as JSON
       const config = {
@@ -117,11 +124,14 @@ export const updateSocialLinks = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        `${backendURL}/user/profile/${id}`,
+        `${backendURL}/user/profile/${user._id}`,
         jsonData,
-        config
+        {
+          headers: authHeader(),
+        }
       );
-      toast.success("Socail Links updated.");
+
+      console.log(data);
 
       return data;
     } catch (error) {
@@ -140,12 +150,10 @@ export const getAllUser = createAsyncThunk(
   "auth/getAllUser",
   async (_, { rejectWithValue }) => {
     try {
-      // configure header's Content-Type as JSON
-
       const { data } = await axios.get(`${backendURL}/user`, {
         headers: authHeader(),
       });
-      console.log(data);
+
       return data;
     } catch (error) {
       console.error(error);
@@ -172,7 +180,6 @@ export const userSlice = createSlice({
   },
   reducers: {
     logout: (state, action) => {
-      state.user = null;
       state.token = null;
     },
   },
@@ -185,7 +192,7 @@ export const userSlice = createSlice({
 
       .addCase(register.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload;
+        state.user = action.payload.user;
         state.success = true;
         state.token = action.payload.token;
       })
@@ -203,7 +210,7 @@ export const userSlice = createSlice({
 
       .addCase(signIn.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload;
+        state.user = action.payload.user;
         state.success = true;
         state.token = action.payload.token;
       })
@@ -228,7 +235,24 @@ export const userSlice = createSlice({
         state.loading = false;
         state.message = true;
         state.users = null;
-        state.error = payload;
+        state.error = action.payload;
+      })
+
+      .addCase(updateSocialLinks.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+
+      .addCase(updateSocialLinks.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.user = action.payload.data.user;
+      })
+      .addCase(updateSocialLinks.rejected, (state, action) => {
+        state.loading = false;
+        state.message = true;
+        state.user = null;
+        state.error = action.payload;
       });
   },
 });

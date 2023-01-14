@@ -18,6 +18,12 @@ const buttons = [
     name: "Images",
     url: "images",
   },
+
+  {
+    id: 4,
+    name: "Users",
+    url: "users",
+  },
 ];
 
 const Admin = () => {

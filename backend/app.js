@@ -8,6 +8,7 @@ import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/user.routes.js";
 import dataRoutes from "./routes/data.routes.js";
+import contentRoutes from "./routes/content.routes.js"
 
 dotenv.config();
 const app = express();
@@ -55,6 +56,7 @@ app.get("/", (req, res, next) => {
 
 app.use("/user", userRoutes);
 app.use("/data", dataRoutes);
+app.use("/content", contentRoutes);
 
 app.use(async (req, res, next) => {
   const error = new Error("Not found");

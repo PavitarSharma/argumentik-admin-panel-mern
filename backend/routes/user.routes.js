@@ -13,5 +13,5 @@ router.get("/",auth, authorizeRoles("admin"), getAllUsers);
 router.put("/:id", auth, authorizeRoles("admin"), updateUserRole);
 
 
-router.put("/profile/:id", auth, authorizeRoles("admin"), updateprofile);
+router.put("/profile/:id", auth, updateprofile);
 export default router;

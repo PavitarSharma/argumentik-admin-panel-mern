@@ -1,9 +1,12 @@
+import { useSelector } from "react-redux"
+
 const SocialMediaIcons = () => {
+  const { user } = useSelector(state => state.users)
   return (
     <div className="flex justify-center md:justify-start my-10 gap-7">
       <a
         className="hover:opacity-50 transition duration-500"
-        href="https://www.linkedin.com"
+        href={user.linkedinLink}
         target="_blank"
         rel="noreferrer"
       >
@@ -12,7 +15,7 @@ const SocialMediaIcons = () => {
       
       <a
         className="hover:opacity-50 transition duration-500"
-        href="https://www.facebook.com"
+        href={user.facebookLink}
         target="_blank"
         rel="noreferrer"
       >
@@ -20,7 +23,7 @@ const SocialMediaIcons = () => {
       </a>
       <a
         className="hover:opacity-50 transition duration-500"
-        href="https://www.instagram.com"
+        href={user.instagramLink}
         target="_blank"
         rel="noreferrer"
       >

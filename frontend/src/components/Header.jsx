@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import AnchorLink from "react-anchor-link-smooth-scroll";
 import useMediaQuery from "../hooks/useMediaQuery";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../redux/slice/userSlice";
+import { toast } from "react-toastify";
 
 const NavbarLink = ({ link, page, selectedPage, setSelectedPage }) => {
   const lowerCasePage = link.toLowerCase();
@@ -21,11 +23,20 @@ const NavbarLink = ({ link, page, selectedPage, setSelectedPage }) => {
 };
 const Header = ({ isTopOfPage, selectedPage, setSelectedPage }) => {
   const [isMenuToggled, setIsMenuToggled] = useState(false);
+  const dispatch = useDispatch();
   const isAboveSmallScreens = useMediaQuery("(min-width: 960px)");
   const navbarBackground = isTopOfPage ? "" : "bg-dark-fade";
+  const navigate = useNavigate()
   const { user } = useSelector((state) => state.users);
   const role = user?.role;
-  console.log(role);
+
+  const logourUser = () => {
+    dispatch(logout());
+    navigate("/login")
+    toast.success("Logout successfully")
+  };
+  
+
   return (
     <>
       <header>
@@ -67,7 +78,7 @@ const Header = ({ isTopOfPage, selectedPage, setSelectedPage }) => {
                     </p>
                   </Link>
                 )}
-                <p className="hover:text-yellow transition duration-500">
+                <p onClick={logourUser} className="hover:text-yellow transition cursor-pointer duration-500">
                   Logout
                 </p>
               </div>

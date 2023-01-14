@@ -1,7 +1,9 @@
 import React from "react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { createContent } from "../../redux/slice/contentSlice";
 
 const validate = Yup.object({
   image: Yup.string()
@@ -12,20 +14,19 @@ const validate = Yup.object({
     .required("Image field is required!"),
   content: Yup.string()
     .min(8, "Must be 8 chracters or more")
-    .max(80, "Must be 15 chracters or less")
     .required("Content field is required!"),
 });
 
 const Images = () => {
-  const handleOnSubmit = async (values, actions) => {
-    const response = await axios.post(
-      "https://argumentik-abckend.onrender.com/user/register",
-      { values }
-    );
-    const data = await response.data;
-    console.log(data);
-    actions.setSubmitting(false);
-    actions.resetForm();
+  const dispatch = useDispatch();
+
+  const { loading, error, success, message } = useSelector(
+    (state) => state.contents
+  );
+  const handleOnSubmit = (data) => {
+    const action = createContent(data);
+    toast.success("Content saved successfully.");
+    dispatch(action);
   };
   return (
     <div>
@@ -33,7 +34,6 @@ const Images = () => {
         initialValues={{
           image: "",
           content: "",
-
         }}
         validationSchema={validate}
         onSubmit={handleOnSubmit}
@@ -89,7 +89,6 @@ const Images = () => {
               className="bg-blue py-[10px] text-white font-semibold text-lg cursor-pointer rounded"
               type="submit"
               disabled={isSubmitting}
-             
             >
               Save
             </button>

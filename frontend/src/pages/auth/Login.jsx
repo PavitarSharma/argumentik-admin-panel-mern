@@ -30,9 +30,16 @@ const Login = () => {
 
   const handleOnSubmit = (data) => {
     dispatch(signIn(data));
-    toast.success("Successfully Logged In.");
-    navigate("/");
+    
+    if(success) {
+      navigate("/");
+      toast.success("Successfully Logged In.");
+    }else {
+      toast.error("Please true again!")
+    }
   };
+
+ 
   return (
     <div className="flex items-center justify-center w-full h-screen">
       <Formik

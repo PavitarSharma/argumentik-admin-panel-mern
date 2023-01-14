@@ -1,17 +1,12 @@
-import Data from "../models/data.model.js";
-import sendMail from "../utils/sendMail.js";
-import User from "../models/user.model.js"
+import Content from "../models/content.model.js";
 
-export const createData = async (req, res, next) => {
+export const createContentData = async (req, res, next) => {
   try {
-    if (!req.body.name || !req.body.contact) {
+    if (!req.body.image || !req.body.content) {
       return res.status(403).json({ message: "Invalid Inputs" });
     }
-    
-    let data = new Data(req.body);
+    let data = new Content(req.body);
     data = await data.save();
-
-  
 
     res.status(201).json({
       success: true,
@@ -26,13 +21,13 @@ export const createData = async (req, res, next) => {
   }
 };
 
-export const getAllData = async (req, res, next) => {
+export const getAllContentData = async (req, res, next) => {
   try {
-    const datas = await Data.find();
+    const contents = await Content.find();
 
     return res.status(200).json({
       success: true,
-      datas,
+      contents,
     });
   } catch (error) {
     return res.status(404).json({

@@ -57,10 +57,10 @@ export const signIn = async (req, res, next) => {
       maxAge: 30 * 24 * 60 * 60 * 1000, //cookie expiry: set to match rT
     });
 
-    const { password, ...data } = user._doc;
+    
     res.status(200).json({
       message: "Logged in successfully",
-      data,
+      user,
       token: token,
     });
   } catch (error) {

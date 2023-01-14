@@ -10,9 +10,12 @@ const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const Admin = lazy(() => import("./pages/admin/Admin"));
 const Images = lazy(() => import("./pages/admin/Images"));
 const Social = lazy(() => import("./pages/admin/Social"));
+const Users = lazy(() => import("./pages/admin/Users"));
 import useMediaQuery from "./hooks/useMediaQuery";
+
 const App = () => {
   const user = true;
+  
   const [selectedPage, setSelectedPage] = useState("home");
   const isAboveMediumScreen = useMediaQuery("(min-width: 1060px)");
   const [isTopOfPage, setIsTopOfPage] = useState(true);
@@ -53,6 +56,7 @@ const App = () => {
             <Route index element={<Dashboard />} />
             <Route path="social-links" element={<Social />} />
             <Route path="images" element={<Images />} />
+            <Route path="users" element={<Users />} />
           </Route>
         </Routes>
       </Suspense>
