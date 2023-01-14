@@ -1,34 +1,76 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { lazy, Suspense, useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Header from "./components/Header";
+const Home = lazy(() => import("./pages/home/Home"));
+const SignUp = lazy(() => import("./pages/auth/SignUp"));
+const Login = lazy(() => import("./pages/auth/Login"));
+const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
+const Admin = lazy(() => import("./pages/admin/Admin"));
+const Images = lazy(() => import("./pages/admin/Images"));
+const Social = lazy(() => import("./pages/admin/Social"));
+import useMediaQuery from "./hooks/useMediaQuery";
+const App = () => {
+  const user = true;
+  const [selectedPage, setSelectedPage] = useState("home");
+  const isAboveMediumScreen = useMediaQuery("(min-width: 1060px)");
+  const [isTopOfPage, setIsTopOfPage] = useState(true);
 
-function App() {
-  const [count, setCount] = useState(0)
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY === 0) setIsTopOfPage(true);
+
+      if (window.scrollY !== 0) setIsTopOfPage(false);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
-}
+    <>
+      <Header
+        isTopOfPage={isTopOfPage}
+        selectedPage={selectedPage}
+        setSelectedPage={setSelectedPage}
+      />
 
-export default App
+      <Suspense fallback={<p> Loading...</p>}>
+        <Routes>
+          <Route
+            path="/"
+            element={<Home />}
+            selectedPage={selectedPage}
+            setSelectedPage={setSelectedPage}
+          />
+
+          <Route path="/signUp" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
+
+          <Route path="/admin" element={<Admin />}>
+            <Route index element={<Dashboard />} />
+            <Route path="social-links" element={<Social />} />
+            <Route path="images" element={<Images />} />
+          </Route>
+        </Routes>
+      </Suspense>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+    </>
+  );
+};
+
+export default App;

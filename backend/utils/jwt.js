@@ -11,7 +11,7 @@ export const generateToken = (userInfo) => {
 
     const secret = process.env.ACCESS_TOKEN_SECRET_KEY;
     const options = {
-      expiresIn: "1h",
+      expiresIn: "7d",
       issuer: "argumentik.com",
     };
     jwt.sign(user, secret, options, (err, token) => {

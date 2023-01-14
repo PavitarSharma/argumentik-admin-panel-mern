@@ -7,9 +7,7 @@ import dotenv from "dotenv";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/user.routes.js";
-import adminRoutes from "./routes/admin.routes.js"
-import dataRoutes from "./routes/data.routes.js"
-import {auth} from "./middlewares/auth.js"
+import dataRoutes from "./routes/data.routes.js";
 
 dotenv.config();
 const app = express();
@@ -18,15 +16,10 @@ const PORT = process.env.PORT || 5000;
 
 // Helemt: API Security
 app.use(helmet());
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
 // CORS: Handle CORS Error
-app.use(
-  cors({
-    origin: ["http://localhost:3000", "*"],
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    credentials: true,
-  })
-);
+app.use(cors());
 app.use(morgan("dev"));
 
 // MongoDB Connection
@@ -61,7 +54,6 @@ app.get("/", (req, res, next) => {
 });
 
 app.use("/user", userRoutes);
-app.use("/admin", adminRoutes);
 app.use("/data", dataRoutes);
 
 app.use(async (req, res, next) => {
