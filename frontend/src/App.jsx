@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Routes, Route } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/Header";
 const Home = lazy(() => import("./pages/home/Home"));
@@ -11,11 +12,13 @@ const Admin = lazy(() => import("./pages/admin/Admin"));
 const Images = lazy(() => import("./pages/admin/Images"));
 const Social = lazy(() => import("./pages/admin/Social"));
 const Users = lazy(() => import("./pages/admin/Users"));
+const NotFound = lazy(() => import("./components/NotFound"));
 import useMediaQuery from "./hooks/useMediaQuery";
 
+
 const App = () => {
-  const user = true;
-  
+  const { token } = useSelector((state) => state.users);
+
   const [selectedPage, setSelectedPage] = useState("home");
   const isAboveMediumScreen = useMediaQuery("(min-width: 1060px)");
   const [isTopOfPage, setIsTopOfPage] = useState(true);
@@ -42,22 +45,25 @@ const App = () => {
 
       <Suspense fallback={<p> Loading...</p>}>
         <Routes>
-          <Route
-            path="/"
-            element={<Home />}
-            selectedPage={selectedPage}
-            setSelectedPage={setSelectedPage}
-          />
+      
+            <Route
+              path="/"
+              element={<Home />}
+              selectedPage={selectedPage}
+              setSelectedPage={setSelectedPage}
+            />
+            <Route path="/admin" element={<Admin />}>
+              <Route index element={<Dashboard />} />
+              <Route path="social-links" element={<Social />} />
+              <Route path="images" element={<Images />} />
+              <Route path="users" element={<Users />} />
+            </Route>
+       
 
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
 
-          <Route path="/admin" element={<Admin />}>
-            <Route index element={<Dashboard />} />
-            <Route path="social-links" element={<Social />} />
-            <Route path="images" element={<Images />} />
-            <Route path="users" element={<Users />} />
-          </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
 

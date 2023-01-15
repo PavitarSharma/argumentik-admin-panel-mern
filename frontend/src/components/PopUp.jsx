@@ -4,6 +4,7 @@ import { createPopupMessage } from "../redux/slice/contentSlice";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { useState } from "react";
+
 const PopUp = ({ setPopup }) => {
   const dispatch = useDispatch();
   const [name, setName] = useState("");
@@ -18,6 +19,7 @@ const PopUp = ({ setPopup }) => {
     const action = createPopupMessage(data);
     toast.success("Content saved successfully.");
     dispatch(action);
+
   };
 
   // const sendEmail = (e) => {

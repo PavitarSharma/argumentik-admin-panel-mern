@@ -41,7 +41,6 @@ const Users = () => {
   }
   return (
     <>
-      
       <motion.div
         className="text-black"
         initial="hidden"
@@ -53,7 +52,7 @@ const Users = () => {
           visible: { opacity: 1, y: 0 },
         }}
       >
-        <div className="border-b border-gray-200 shadow py-8">
+        <div className="border-b border-gray-200 shadow py-8 w-[1100px] overflow-x-scroll">
           <table className="divide-y divide-gray-300 w-full">
             <thead className="bg-gray-50">
               <tr>
@@ -77,7 +76,7 @@ const Users = () => {
                 </th>
               </tr>
             </thead>
-            return (
+           
             <tbody key={user._id} className="bg-white divide-y divide-gray-300">
               {users &&
                 users?.map((user, index) => {
@@ -117,7 +116,7 @@ const Users = () => {
 
                           <button className="text-red cursor-pointer">
                             <AiOutlineEdit
-                              onClick={(event) => prompt("Enetr role")}
+                              onClick={(event) => submitHandler(event, user._id)}
                             />
                           </button>
                         </div>
@@ -127,6 +126,7 @@ const Users = () => {
                 })}
             </tbody>
           </table>
+        
         </div>
       </motion.div>
     </>

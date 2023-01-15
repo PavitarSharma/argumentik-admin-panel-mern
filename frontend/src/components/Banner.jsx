@@ -14,7 +14,7 @@ const Banner = () => {
   return (
     <>
       
-      <div id="home" className="pt-32 pb-20 px-20">
+      <div id="home" className="pt-32 pb-20 px-12">
       {popup ? <PopUp setPopup={setPopup} /> : null}
         <div className="flex items-center gap-10 sm:justify-between">
           <p className="md:text-[100px] sm:text-[80px] text-2xl">Home</p>

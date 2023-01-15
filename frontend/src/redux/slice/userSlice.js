@@ -177,11 +177,16 @@ export const userSlice = createSlice({
     error: false,
     token: null,
     message: "",
+    social: {}
   },
   reducers: {
     logout: (state, action) => {
       state.token = null;
     },
+
+    socialLinks: (state, action) => {
+      state.social = action.payload
+    }
   },
   extraReducers: (bulder) => {
     bulder
@@ -257,6 +262,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { logout } = userSlice.actions;
+export const { logout, socialLinks } = userSlice.actions;
 
 export default userSlice.reducer;

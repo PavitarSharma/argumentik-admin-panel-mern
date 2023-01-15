@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import LineGradient from "../../components/LineGradient";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllContent } from "../../redux/slice/contentSlice";
+import Loading from "../../components/Loading";
 const Lifestyles = () => {
   const dispatch = useDispatch();
   const { loading, error, contents } = useSelector((state) => state.contents);
@@ -14,7 +15,7 @@ const Lifestyles = () => {
   if (loading) {
     return (
       <>
-        <div>Loading....</div>
+        <Loading />
       </>
     );
   }
@@ -53,7 +54,7 @@ const Lifestyles = () => {
       </motion.div>
 
       <motion.div
-        className="md:w-1/3 text-center md:text-left"
+        className="text-center md:text-left"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.5 }}
@@ -63,7 +64,7 @@ const Lifestyles = () => {
           visible: { opacity: 1, x: 0 },
         }}
       >
-        <div className="flex md:flex-row flex-col items-center  gap-4 mt-6">
+        <div className="flex md:flex-wrap md:flex-row justify-center flex-col items-center gap-4 mt-6">
           {contents &&
             contents?.map((content) => {
               return (

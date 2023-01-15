@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { updateSocialLinks } from "../../redux/slice/userSlice";
+import { socialLinks, updateSocialLinks } from "../../redux/slice/userSlice";
 
 const Social = () => {
   const [facebook, setFacebook] = useState("");
@@ -17,7 +17,9 @@ const Social = () => {
       instagramLink: instagram,
       linkedinLink: linkedin,
     };
-    dispatch(updateSocialLinks(jsonData, toast));
+    // dispatch(updateSocialLinks(jsonData, toast));
+    dispatch(socialLinks(jsonData))
+    // localStorage.setItem("social", JSON.stringify(jsonData));
   };
   return (
     <div>
